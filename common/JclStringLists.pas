@@ -54,8 +54,7 @@ uses
   Variants,
   Classes, SysUtils,
   {$ENDIF ~HAS_UNITSCOPE}
-  JclBase,
-  JclPCRE;
+  JclBase;
 
 {$DEFINE HAS_TSTRINGS_COMPARESTRINGS}
 {$IFDEF FPC}
@@ -222,9 +221,9 @@ type
     FOwnerInterface: IInterface;
   public
     { IInterface }
-     function _AddRef: Integer; stdcall;
-     function _Release: Integer; stdcall;
-     function QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} IID: TGUID; out Obj): HResult;  stdcall;
+     function _AddRef: Integer; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+     function _Release: Integer; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+     function QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} IID: TGUID; out Obj): HResult;  {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
      procedure AfterConstruction; override;
   end;
 
@@ -471,7 +470,7 @@ begin
 end;
 
 
-function TJclInterfacedStringList._AddRef: Integer;stdcall;
+function TJclInterfacedStringList._AddRef: Integer;
 begin
   if assigned(FOwnerInterface) then
     Result := FOwnerInterface._AddRef
@@ -480,7 +479,7 @@ begin
 end;
 
 
-function TJclInterfacedStringList._Release: Integer;stdcall;
+function TJclInterfacedStringList._Release: Integer;
 begin
   if assigned(FOwnerInterface) then
     Result := FOwnerInterface._Release
@@ -489,7 +488,7 @@ begin
 end;
 
 
-function TJclInterfacedStringList.QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} IID: TGUID; out Obj): HResult;stdcall;
+function TJclInterfacedStringList.QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} IID: TGUID; out Obj): HResult;
 begin
   if GetInterface(IID, Obj) then
     Result := 0
