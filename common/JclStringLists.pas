@@ -54,6 +54,9 @@ uses
   Variants,
   Classes, SysUtils,
   {$ENDIF ~HAS_UNITSCOPE}
+  {$IFDEF JCL_PCRE}
+  JclPCRE,
+  {$ENDIF JCL_PCRE}
   JclBase;
 
 {$DEFINE HAS_TSTRINGS_COMPARESTRINGS}
