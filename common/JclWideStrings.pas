@@ -537,7 +537,7 @@ function StrICompW(const Str1, Str2: PWideChar): SizeInt;
 // one-to-many mappings which must be considered here.
 {$IFDEF UNICODE_RTL_DATABASE}
 begin
-   Result := AnsiStrIComp(Str1, Str2)
+   Result := AnsiStrIComp(PChar(string(Str1)), PChar(string(Str2)));
 end;
 {$ELSE ~UNICODE_RTL_DATABASE}
 var
